@@ -541,7 +541,7 @@ const AliasEntries = ({ aliases, onChange, allClasses, allContexts }) => {
             <AddIcon fontSize='inherit' /> Add Alias
           </Button>
           <Button size="small" variant="outlined" onClick={handleAddAliasesFromHTML}>
-            <AddIcon fontSize='inherit' /> Add Alias from HTML
+            <AddIcon fontSize='inherit' /> Add Aliases from HTML
           </Button>
         </Stack>
       </Grid>
