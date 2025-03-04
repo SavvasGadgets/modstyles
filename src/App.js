@@ -106,7 +106,8 @@ export default function App() {
 
 const DangerZone = () => {
 
-  const isAdmin = true
+  let params = new URLSearchParams(document.location.search)
+  let isAdmin = params.get("admin") === 'true'
 
   return (
     <Stack spacing={2}>
