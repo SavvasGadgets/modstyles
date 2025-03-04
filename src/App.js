@@ -68,6 +68,9 @@ const placeholderColorData = [
     "Blue 2"
 ]
 
+let params = new URLSearchParams(document.location.search)
+let isAdmin = params.get("admin") === 'true'
+
 export default function App() {
 
   const [classes, setClasses] = useState(placeholderInitData.classes)
@@ -98,17 +101,13 @@ export default function App() {
         <AliasEntries aliases={aliases} onChange={handleAliasesChange} allClasses={classes} allContexts={contexts} />
       </Paper>
       <Paper sx={{padding: 2, border: '1px solid red'}}>
-        <DangerZone />
+        <DangerZone isAdmin={isAdmin} />
       </Paper>
     </Stack>
   )
 }
 
 const DangerZone = () => {
-
-  let params = new URLSearchParams(document.location.search)
-  let isAdmin = params.get("admin") === 'true'
-
   return (
     <Stack spacing={2}>
       <Typography>Danger Zone</Typography>
@@ -119,7 +118,7 @@ const DangerZone = () => {
   )
 }
 
-const ImportSection = ({ isAdmin }) => {
+const ImportSection = () => {
 
   const placeholderCourseList = ['Course 1', 'Course 2', 'Course 3']
 
@@ -190,7 +189,7 @@ const ImportSection = ({ isAdmin }) => {
   )
 }
 
-const ResetSection = ({ isAdmin }) => {
+const ResetSection = () => {
 
   const [resetButtonDisabled, setResetButtonDisabled] = useState(!isAdmin)
   const [resetAlertVisible, setResetAlertVisible] = useState(false)
@@ -541,7 +540,7 @@ const AliasEntries = ({ aliases, onChange, allClasses, allContexts }) => {
           <Button size="small" variant="outlined" onClick={handleAddAlias}>
             <AddIcon fontSize='inherit' /> Add Alias
           </Button>
-          <Button size="small" variant="outlined" onClick={handleAddAliasesFromHTML}>
+          <Button disabled={!isAdmin} size="small" variant="outlined" onClick={handleAddAliasesFromHTML}>
             <AddIcon fontSize='inherit' /> Add Aliases from HTML
           </Button>
         </Stack>
