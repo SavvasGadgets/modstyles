@@ -516,6 +516,10 @@ const AliasEntries = ({ aliases, onChange, allClasses, allContexts }) => {
     onChange(newAliases)
   }
 
+  const handleAddAliasesFromHTML = () => {
+    console.log('open the asset manager to select an HTML file to parse for aliases')
+  }
+
   return (
     <Grid container spacing={2} direction="column">
       <Typography>Aliases</Typography>
@@ -532,9 +536,14 @@ const AliasEntries = ({ aliases, onChange, allClasses, allContexts }) => {
         </Grid>
       ))}
       <Grid size={{xs: 12}}>
-        <Button size="small" variant="outlined" onClick={handleAddAlias}>
-          <AddIcon fontSize='inherit' /> Add Alias
-        </Button>
+        <Stack direction="row" spacing={2}>
+          <Button size="small" variant="outlined" onClick={handleAddAlias}>
+            <AddIcon fontSize='inherit' /> Add Alias
+          </Button>
+          <Button size="small" variant="outlined" onClick={handleAddAliasesFromHTML}>
+            <AddIcon fontSize='inherit' /> Add Alias from HTML
+          </Button>
+        </Stack>
       </Grid>
     </Grid>
   )
