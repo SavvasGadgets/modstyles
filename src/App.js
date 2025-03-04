@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import Button from '@mui/material/Button'
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, Chip, Grid2 as Grid, IconButton, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, Card, CardContent, Chip, Grid2 as Grid, IconButton, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import {
   ExpandMore as ExpandMoreIcon,
   Delete as DeleteIcon,
@@ -12,9 +12,45 @@ const placeholderInitData = {
   "classes": [
     {
       "label": "A Head",
-      "name": "ahead",
+      "name": "a_head"
+    },
+    {
+      "label": "B Head",
+      "name": "b_head"
+    },
+    {
+      "label": "C Head",
+      "name": "c_head"
+    },
+    {
+      "label": "D Head",
+      "name": "d_head"
+    },
+    {
+      "label": "E Head",
+      "name": "e_head"
+    },
+    {
+      "label": "F Head",
+      "name": "f_head"
+    },
+    {
+      "label": "Body Text",
+      "name": "body_text"
+    },
+    {
+      "label": "Body Text Display",
+      "name": "body_text_display",
       "styles": {
-        "color": "Blue 2"
+        "size": "lg",
+        "fontWeight": "600"
+      }
+    },
+    {
+      "label": "Body Text Inline",
+      "name": "body_text_inline",
+      "styles": {
+        "fontWeight": "700"
       }
     }
   ],
@@ -61,6 +97,141 @@ export default function App() {
       <Paper sx={{padding: 2}}>
         <AliasEntries aliases={aliases} onChange={handleAliasesChange} allClasses={classes} allContexts={contexts} />
       </Paper>
+      <Paper sx={{padding: 2, border: '1px solid red'}}>
+        <DangerZone />
+      </Paper>
+    </Stack>
+  )
+}
+
+const DangerZone = () => {
+
+  const isAdmin = true
+
+  return (
+    <Stack spacing={2}>
+      <Typography>Danger Zone</Typography>
+      <ImportSection isAdmin={isAdmin} />
+      <hr />
+      <ResetSection isAdmin={isAdmin} />
+    </Stack>
+  )
+}
+
+const ImportSection = ({ isAdmin }) => {
+
+  const placeholderCourseList = ['Course 1', 'Course 2', 'Course 3']
+
+  const [importButtonDisabled, setImportButtonDisabled] = useState(!isAdmin)
+  const [importAlertVisible, setImportAlertVisible] = useState(false)
+
+  const [selectedCourse, setSelectedCourse] = useState(null)
+
+  const handleImportClick = () => {
+    setImportAlertVisible(true)
+    setImportButtonDisabled(true)
+  }
+
+  const handleSelectedCourseChange = (e) => {
+    setSelectedCourse(e.target.value)
+  }
+
+  const handleImportConfirm = () => {
+    setImportAlertVisible(false)
+    setImportButtonDisabled(false)
+    console.log('import the styles from the selected course: ', selectedCourse)
+  }
+
+  const handleImportCancel = () => {
+    setImportAlertVisible(false)
+    setImportButtonDisabled(false)
+  }
+
+  return (
+    <Stack spacing={2}>
+      <Stack direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+        <Stack>
+          <Typography>Copy Styles from Course</Typography>
+          <Typography variant="body2">Remove all existing styles and replace with all styles from another course.</Typography>
+        </Stack>
+        <Stack spacing={2} alignItems={'center'}>
+          <Button disabled={importButtonDisabled} size="small" variant="outlined" color="error" onClick={handleImportClick}>Import Styles</Button>
+        </Stack>
+      </Stack>
+      {importAlertVisible &&
+        <Alert severity="error">
+          <Stack spacing={2}>
+            <Typography>This action will overwrite all existing styles. Are you sure you want to proceed?</Typography>
+            <Stack spacing={2} direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+              <TextField
+                size="small"
+                fullWidth
+                select
+                name={"aliases"}
+                label={"Course"}
+                value={selectedCourse ?? ''}
+                onChange={handleSelectedCourseChange}
+                >
+                <MenuItem value={''}>&nbsp;</MenuItem>
+                {placeholderCourseList.map((option, index) => (
+                  <MenuItem key={index} value={option}>{option}</MenuItem>
+                ))}
+              </TextField>
+              <Stack spacing={2} direction={'row'}>
+                <Button size="small" variant="outlined" color="error" onClick={handleImportConfirm}>Import</Button>
+                <Button size="small" variant="contained" color="error" onClick={handleImportCancel}>Cancel</Button>
+              </Stack>
+            </Stack>
+          </Stack>
+        </Alert>
+      }
+    </Stack>
+  )
+}
+
+const ResetSection = ({ isAdmin }) => {
+
+  const [resetButtonDisabled, setResetButtonDisabled] = useState(!isAdmin)
+  const [resetAlertVisible, setResetAlertVisible] = useState(false)
+
+  const handleResetClick = () => {
+    setResetAlertVisible(true)
+    setResetButtonDisabled(true)
+  }
+
+  const handleResetConfirm = () => {
+    setResetAlertVisible(false)
+    setResetButtonDisabled(false)
+    console.log('reset all styles to the global defaults')
+  }
+
+  const handleResetCancel = () => {
+    setResetAlertVisible(false)
+    setResetButtonDisabled(false)
+  }
+
+  return (
+    <Stack spacing={2}>
+      <Stack direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
+        <Stack>
+          <Typography>Reset Styles to Default</Typography>
+          <Typography variant="body2">Remove all existing styles and replace with the default global styles.</Typography>
+        </Stack>
+        <Stack spacing={2} alignItems={'center'}>
+          <Button disabled={resetButtonDisabled} size="small" variant="outlined" color="error" onClick={handleResetClick}>Reset Styles</Button>
+        </Stack>
+      </Stack>
+      {resetAlertVisible &&
+        <Alert severity="error">
+          <Stack spacing={2}>
+            <Typography>This action will overwrite all existing styles. Are you sure you want to proceed?</Typography>
+            <Stack spacing={2} direction={'row'}>
+              <Button size="small" variant="outlined" color="error" onClick={handleResetConfirm}>Reset</Button>
+              <Button size="small" variant="contained" color="error" onClick={handleResetCancel}>Cancel</Button>
+            </Stack>
+          </Stack>
+        </Alert>
+      }
     </Stack>
   )
 }
