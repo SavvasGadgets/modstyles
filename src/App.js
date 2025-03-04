@@ -151,7 +151,7 @@ const ImportSection = () => {
     <Stack spacing={2}>
       <Stack direction="row" spacing={2} alignItems={'center'} justifyContent={'space-between'}>
         <Stack>
-          <Typography>Copy Styles from Course</Typography>
+          <Typography>Import Styles from Course</Typography>
           <Typography variant="body2">Remove all existing styles and replace with all styles from another course.</Typography>
         </Stack>
         <Stack spacing={2} alignItems={'center'}>
